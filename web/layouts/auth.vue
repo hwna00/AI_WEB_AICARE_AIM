@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <transition>
+    <transition name="fade">
       <Nuxt />
     </transition>
   </div>
