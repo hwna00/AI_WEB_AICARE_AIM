@@ -17,6 +17,7 @@
         >아직 회원이 아니신가요?
         <em @click="$router.push('/signup')">회원가입</em></span
       >
+      <span> <em @click="$router.push('/try-it-first')">체험하러가기</em></span>
     </div>
   </div>
 </template>
@@ -106,11 +107,15 @@ export default {
   .footer {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 
     em {
       color: $yellow-darken;
+    }
+
+    span:last-child {
+      margin-top: 8px;
     }
   }
 }

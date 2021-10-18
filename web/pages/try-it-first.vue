@@ -58,11 +58,9 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  height: $page-height;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
 
   .feedback {
     height: 55vh;
@@ -71,6 +69,7 @@ export default {
     align-items: center;
     border: 1px solid $gray;
     border-radius: 10px;
+    margin-bottom: 36px;
   }
 
   .record {
