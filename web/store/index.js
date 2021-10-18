@@ -2,10 +2,9 @@ const actions = {
   onAuthStateChangedAction(state, { authUser, claims }) {
     if (!authUser) {
       state.commit('SET_UID', null)
-      this.$router.push({
-        path: '/login',
-      })
+      this.$fire.auth.signOut().then(this.$router.push('/try-it-first'))
     } else {
+      console.log('user exist')
       const { uid } = authUser
       state.commit('SET_UID', uid)
     }

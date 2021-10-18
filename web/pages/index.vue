@@ -15,7 +15,11 @@
           <span>인기글</span>
         </div>
         <ul>
-          <li v-for="post in posts" :key="post.id" @click="$router.push(`community/${post.id}`)">
+          <li
+            v-for="post in posts"
+            :key="post.id"
+            @click="$router.push(`community/${post.id}`)"
+          >
             <span class="hits-posts__title">{{ post.title }}</span>
             <span class="hits-posts__timestamp">{{
               timestampToDate(post.timestamp)
@@ -33,42 +37,45 @@
 
 <script>
 export default {
-  async asyncData({ app, store }) {
+  async asyncData({ app, store, redirect }) {
     const uid = await store.getters.getUid
-    const snapshot = app.$fire.firestore.collection('user').doc(uid)
-    const pathReference = await app.$fire.storage.ref(`${uid}/profile/`)
-    const user = await snapshot.get().then((doc) => {
-      if (doc.exists) {
-        return doc.data()
-      }
-    })
-    const profileImg = await pathReference.listAll().then((result) => {
-      const imgUrl = result.items[0].getDownloadURL().then((url) => {
-        return url
+    try {
+      const snapshot = await app.$fire.firestore.collection('user').doc(uid)
+      const user = await snapshot.get().then((doc) => {
+        if (doc.exists) {
+          return doc.data()
+        }
       })
-
-      return imgUrl
-    })
-    store.dispatch('setUserName', user.name)
-
-    const posts = await app.$fire.firestore
-      .collection('post')
-      .orderBy('recommend', 'desc')
-      .limit(3)
-      .get()
-      .then((querySnapshot) => {
-        const result = []
-        querySnapshot.forEach((doc) => {
-          const data = doc.data()
-          result.push({
-            id: doc.id,
-            title: data.title,
-            timestamp: data.created_at,
-          })
+      store.dispatch('setUserName', user.name)
+      const pathReference = await app.$fire.storage.ref(`${uid}/profile/`)
+      const profileImg = await pathReference.listAll().then((result) => {
+        const imgUrl = result.items[0].getDownloadURL().then((url) => {
+          return url
         })
-        return result
+        return imgUrl
       })
-    return { user, profileImg, posts }
+
+      const posts = await app.$fire.firestore
+        .collection('post')
+        .orderBy('recommend', 'desc')
+        .limit(3)
+        .get()
+        .then((querySnapshot) => {
+          const result = []
+          querySnapshot.forEach((doc) => {
+            const data = doc.data()
+            result.push({
+              id: doc.id,
+              title: data.title,
+              timestamp: data.created_at,
+            })
+          })
+          return result
+        })
+      return { user, profileImg, posts }
+    } catch {
+      redirect('/try-it-first')
+    }
   },
   data() {
     return {}

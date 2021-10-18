@@ -32,9 +32,9 @@ export default {
     '@nuxtjs/eslint-module',
   ],
 
-  router: {
-    middleware: ['auth'],
-  },
+  // router: {
+  //   middleware: ['auth'],
+  // },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -59,7 +59,7 @@ export default {
     },
     services: {
       auth: {
-        persistence: 'local',
+        persistence: 'session',
         initialize: {
           onAuthStateChangedAction: 'onAuthStateChangedAction',
           subscribeManually: false,
