@@ -4,7 +4,7 @@
       <div class="sign-up__title">
         <span>회원가입</span>
       </div>
-      <div class="sign-up__form">
+      <form class="sign-up__form">
         <input v-model="auth.name" type="text" placeholder="이름" required />
         <input v-model="auth.email" type="text" placeholder="이메일" required />
         <input
@@ -40,7 +40,7 @@
         <div class="button">
           <button @click="signUp">회원가입</button>
         </div>
-      </div>
+      </form>
     </div>
     <div class="footer">
       <span
@@ -75,22 +75,30 @@ export default {
       }
     },
     async signUp() {
-      await this.$fire.auth
-        .createUserWithEmailAndPassword(this.auth.email, this.auth.password)
-        .then((userCredential) => {
-          const user = userCredential.user
-          const storageRef = this.$fire.storage.ref()
-          const mountainsRef = storageRef.child(`${user.uid}/profile/${this.auth.profileImg.name}`);
-          mountainsRef.put(this.auth.profileImg)
-          this.$fire.firestore.collection('user').doc(user.uid).set({
-            discharge_date: this.auth.dischargeDate,
-            name: this.auth.name,
+      if (this.password === this.passwordCheck) {
+        await this.$fire.auth
+          .createUserWithEmailAndPassword(this.auth.email, this.auth.password)
+          .then((userCredential) => {
+            const user = userCredential.user
+            const storageRef = this.$fire.storage.ref()
+            const mountainsRef = storageRef.child(
+              `${user.uid}/profile/${this.auth.profileImg.name}`
+            )
+            mountainsRef.put(this.auth.profileImg)
+            this.$fire.firestore.collection('user').doc(user.uid).set({
+              discharge_date: this.auth.dischargeDate,
+              name: this.auth.name,
+            })
+            user.updateProfile({
+              displayName: this.auth.name,
+              email: this.auth.email,
+            })
+            this.$router.push('/')
           })
-          this.$router.push('/')
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
     },
   },
 }

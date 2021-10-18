@@ -4,13 +4,18 @@
       <div class="login__title">
         <span>로그인</span>
       </div>
-      <div class="login__form">
-        <input v-model="auth.email" type="text" placeholder="email" />
-        <input v-model="auth.password" type="password" placeholder="password" />
+      <form class="login__form">
+        <input v-model="auth.email" type="text" placeholder="email" required />
+        <input
+          v-model="auth.password"
+          type="password"
+          placeholder="password"
+          required
+        />
         <div class="button">
           <button @click="login">로그인</button>
         </div>
-      </div>
+      </form>
     </div>
     <div class="footer">
       <span
