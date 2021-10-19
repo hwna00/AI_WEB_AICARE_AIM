@@ -38,7 +38,7 @@
         </label>
         <input id="input-profile" type="file" @change="checkUpload" />
         <div class="button">
-          <button @click="signUp">회원가입</button>
+          <button @click.prevent="signUp">회원가입</button>
         </div>
       </form>
     </div>

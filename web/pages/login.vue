@@ -13,7 +13,7 @@
           required
         />
         <div class="button">
-          <button @click="login">로그인</button>
+          <button @click.prevent="login">로그인</button>
         </div>
       </form>
     </div>
