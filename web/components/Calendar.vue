@@ -1,6 +1,6 @@
 <template>
   <div>
-    <no-ssr>
+    <client-only>
       <v-calendar
         :attributes="attrs"
         mode="date"
@@ -8,7 +8,7 @@
         :max-date='new Date()'
         @dayclick="goDetail"
       />
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
